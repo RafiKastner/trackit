@@ -17,7 +17,7 @@ export function CardHeader({ children }) {
 }
 
 export function CardTitle({ children }) {
-    return <h1>{ children }</h1>
+    return <h1 className="card-title">{ children }</h1>
 }
 
 export function CardContent({ children }) {

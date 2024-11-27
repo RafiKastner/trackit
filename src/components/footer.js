@@ -5,9 +5,6 @@ export default function Footer() {
                 <FooterTitle>Social</FooterTitle>
                 <FooterLink href="https://github.com">GitHub</FooterLink>
             </FooterGroup>
-            <FooterGroup>
-                <FooterTitle>Docs</FooterTitle>
-            </FooterGroup>
         </FooterContainer>
     )
 }
@@ -15,11 +12,11 @@ export default function Footer() {
 export function FooterContainer({ children }) {
     return (
         <>
-            <div className="footer-container">
+            <footer className="footer">
                 <div className="footer-groups-container">{children}</div>
                 
-                <p className="footer-groups-container">Copyright © ${new Date().getFullYear()} Rafi Kastner.</p>
-            </div>
+                <p className="footer-groups-container">Copyright © {new Date().getFullYear()} Rafi Kastner.</p>
+            </footer>
         </>
     )
 }

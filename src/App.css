@@ -1,33 +1,111 @@
+html, body { 
+  height: 100%;   
+  width: 100%; 
+  margin: 0; 
+  padding: 0; 
+}
+
+button {
+  background-color: inherit;
+}
+
+.content {
+  display: flex;
+  height: 92vh;
+}
+
+main {
+  width: 100%;
+}
+
+.no-scroll {
+  position: fixed;
+  overflow-y: hidden;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
 .sidebar {
   width: 200px;
-  padding: 10px 20px;
+  padding: 0 16px 0 24px;
   flex-shrink: 0;
   border-color: rgb(213, 213, 213);
-  border-radius: 1px;
+  border-width: 2px;
   border-right-style: solid;
+  overflow-y: auto;
+}
+
+.navbar-sidebar {
+  position: sticky;
+  margin-top: 16px;
+  top: 16px;
+  display: flex;
+  background-color: white;
+}
+
+.logo-button {
+  background-color: inherit;
+  text-decoration: none;
+  color: black;
+  border: none;
+  padding: 0;
+}
+
+.logo-text {
+  font-size: 32px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.dark-mode-toggle {
+  display: flex;
+  padding: 0;
+  margin: 0 12px;
+  border: none;
+  align-items: center;
+}
+
+.collapse-button-container {
+  display: flex;
+  justify-content: right;
+  background-color: inherit;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.collapse-button {
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.reorder-group {
+  padding: 0;
 }
 
 .reorder-item {
   list-style-type: none;
 }
 
-.reorder-group {
-  padding: 0 20px;
+.card-title {
+  font-size: 24px;
 }
 
-.container {
-  display: flex;
-}
-
-main {
-  width: 100% - 200px;
-}
-
-.footer-container {
+.footer {
   background-color: aliceblue;
 }
 
 .footer-groups-container {
   display: flex;
   justify-content: space-evenly;
+}
+
+.white {
+  position: absolute;
+  background-color: white;
+  height: 50px;
+  width: 200px;
 }
