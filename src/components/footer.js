@@ -29,7 +29,7 @@ export function FooterGroup({ children }) {
 
 export function FooterTitle({ children }) {
     return (
-        <h3>{ children }</h3>
+        <h3 className="footer-title">{ children }</h3>
     )
 }
 
