@@ -1,11 +1,12 @@
 :root {
   /* Universal primary colors */
-  --color-primary-darkest: #2041e6;
-  --color-primary-darker: #3168de;
-  --color-primary-dark: #207ed1;
-  --color-primary: #54a3e9;
-  --color-primary-light: #8bbdec;
-  --color-primary-lightest: #cae3fa;
+  --color-primary-darkest: #5932cd;
+  --color-primary-darker: #4b23db;
+  --color-primary-dark: #2920d4;
+  --color-primary: #0045d0;
+  --color-primary-light: #0070d9;
+  --color-primary-lighter: #3e94e0;
+  --color-primary-lightest: #84b8dd;
   /* Light theme surface colors */
   --color-surface-darkest: #d2d1d1;
   --color-surface-darker: #e2e2e2;
@@ -17,9 +18,11 @@
   --text-color-black: black;
   --text-color-white: white;
   --text-color: var(--text-color-black);
-
-  --border-color: rgb(213, 213, 213);
+  /* misc color assignments */
+  --border-color: #d5d5d5;
   --bg-color: var(--color-surface-lightest);
+  --bg-color-colored: var(--color-primary-lighter);
+
   color-scheme: normal;
   background-color: var(--bg-color);
 }
@@ -153,8 +156,9 @@ main {
 }
 
 .navbar-sidebar {
-  margin-top: 16px;
   position: sticky;
+  z-index: 2;
+  margin-top: 16px;
   top: 16px;
   display: flex;
   background-color: var(--bg-color);
@@ -237,7 +241,7 @@ main {
 
 .footer {
   color: var(--text-color-black);
-  background-color: var(--color-primary);
+  background-color: var(--bg-color-colored);
 }
 
 .footer-groups-container {
@@ -251,7 +255,8 @@ button {
 
 .white {
   position: absolute;
+  z-index: 2;
   background-color: var(--bg-color);
-  height: 50px;
-  width: 200px;
+  height: 100px;
+  width: 230px;
 }
