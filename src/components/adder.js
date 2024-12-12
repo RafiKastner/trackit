@@ -1,15 +1,10 @@
+import { useState } from "react"
+
 export default function AddButton({ notes, setNotes }) {
+    var [idCounter, setIdCounter] = useState(4)
     const addItem = () => {
-        var sortedNotes = [...notes]
-        sortedNotes.sort()
-        let tracker = notes.length;
-        for (let i = 0; i < sortedNotes.length; i++) {
-            if (sortedNotes[i] !== i) {
-            tracker = i
-            break
-            }
-        }
-        setNotes([...notes, tracker])
+        setIdCounter(idCounter+1)
+        setNotes([...notes, { title: "Untitled", id: idCounter}])
     }
 
     return (

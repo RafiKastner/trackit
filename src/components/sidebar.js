@@ -68,8 +68,8 @@ export default function Sidebar(props) {
                 animate={open ? 'open' : 'closed'}
             >
                 {notes.map((note, index) => (
-                <Reorder.Item key={note} value={note} className='reorder-item'
-                variants={itemVariants}>
+                <Reorder.Item key={note.id} value={note} className='reorder-item' 
+                    variants={itemVariants}>
                     <Item index={index} {...props}/>
                 </Reorder.Item>
                 ))}
@@ -122,10 +122,18 @@ export function CollapseButton({ color, setSidebarOpen }) {
     )
 }
 
-export function WhiteSpace({ sidebarOpen, height = 50 }) {
+export function WhiteSpace({ notes, sidebarOpen, height = 50 }) {
     return (
         <motion.div className='white' style={ {height: height} }
-        animate={{ left: sidebarOpen ? '0' : '-250px' }}
+        animate={{ 
+            width: sidebarOpen ? "230px" : "0" ,
+            translateX: sidebarOpen ? '0' : '-256px',
+        }}
+        transition={{
+            type: 'tween',
+            duration: .3,
+            delay: sidebarOpen ? 0 : .07 * notes.length + .02 + .125,
+        }}
         />
     )
 }
