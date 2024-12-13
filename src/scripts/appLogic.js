@@ -20,7 +20,11 @@ export function useAppLogic() {
   const [notes, setNotes] = useState(() => {
     let initialNotes = [];
     for (let i = 0; i < 4; i++) {
-      initialNotes.push({ title: `Untitled ${i}`, id: i });
+      initialNotes.push({ 
+        title: `Untitled ${i}`, 
+        id: i,
+        description: "There's never enough time to do all the nothing you want",
+      });
     }
     return initialNotes;
   });
