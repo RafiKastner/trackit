@@ -2,6 +2,17 @@ import { Reorder } from 'framer-motion'
 import {Item} from './menuItem';
 import { motion } from 'framer-motion';
 
+const sidebarVariants = {
+    open: {
+        width: "300px",
+        translateX: '0',
+    },
+    closed: {
+        width: "0",
+        translateX: '-150px',
+    },
+}
+
 const listVariants = {
     open: {
         transition: { 
@@ -36,6 +47,7 @@ const itemVariants = {
 
 export default function Sidebar(props) {
     //make reducer
+    //separate css into different files
     //structure of notes/whatever
     //Notes -> items -> cards, lists, graphs, drawings, etc
     var notes = props.notes
@@ -45,10 +57,9 @@ export default function Sidebar(props) {
     return (
     <motion.aside className='sidebar' 
         layout
-        animate={{ 
-            width: open ? "256px" : "0" ,
-            translateX: open ? '0' : '-256px',
-        }}
+        initial='open'
+        variants={sidebarVariants}
+        animate={open ? 'open' : 'closed'}
         transition={{
             type: 'tween',
             duration: .3,
