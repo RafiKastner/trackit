@@ -37,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "lorem-ipsum": "^2.0.8",
+    "react-fps-stats": "^0.3.1"
   }
 }
