@@ -1,0 +1,30 @@
+/* Navbar */
+.navbar-main {
+	position: absolute;
+	top: 16px;
+	z-index: 1;
+}
+
+.main-navbar-inner {
+	position: absolute;
+	display: flex;
+	align-items: center;
+}
+
+/* Button to open sidebar */
+.open-sidebar {
+	width: 30px;
+	height: 30px;
+	padding: 0 0;
+	margin: 0 12px;
+	border: none;
+}
+
+
+/* content */
+.content-main {
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	background: transparent;
+}

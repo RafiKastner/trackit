@@ -1,0 +1,35 @@
+/* Sidebar itself */
+.sidebar {
+	width: 384px;
+	z-index: 2;
+}
+
+.sidebar-inner {
+	height: 100%;
+	width: 100%;
+	background-color: var(--bg-color);
+	border-color: var(--border-color);
+	border-width: 2px;
+	border-right-style: solid;
+	overflow-y: auto;
+	display: flex;
+	box-sizing: border-box;
+}
+
+/* Folder display */
+
+/* Notes display */
+.notes-display {
+	padding: 0 24px 0 24px;
+	overflow-y: auto;
+}
+
+/* Reorder */
+.reorder-group {
+	padding: 0;
+	margin-top: 8px;
+}
+
+.reorder-item {
+	list-style-type: none;
+}

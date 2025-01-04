@@ -1,0 +1,9 @@
+.footer {
+	color: var(--text-color-black);
+	background-color: var(--bg-color-colored);
+}
+
+.footer-groups-container {
+	display: flex;
+	justify-content: space-evenly;
+}

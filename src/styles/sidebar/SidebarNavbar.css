@@ -1,0 +1,57 @@
+/* Navbar */
+.navbar-sidebar {
+	margin: 24px 0;
+}
+
+/* Header */
+.navbar-sidebar-header-container {
+	margin: 0;
+	height: 24px;
+	display: flex;
+	justify-content: left;
+	align-items: center;
+}
+
+.folder-name-header {
+	margin: 0;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+/* Back */
+.topbar-nav-back-button {
+	height: 100%;
+	padding: 0;
+	margin-right: 8px;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+}
+
+/* Search */
+.search {
+	width: 100%;
+	overflow: hidden;
+	max-height: 26px;
+	margin: 8px 0;
+	border-width: 2px;
+	border-style: none;
+	box-sizing: border-box;
+}
+
+.search-input {
+
+}
+
+.search-button {
+	border: none;
+	width: 100%;
+}
+
+/* Adder */
+.adder-text {
+	margin: 0;
+	padding: 0;
+	color: var(--text-color);
+}

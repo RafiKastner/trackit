@@ -1,263 +1,95 @@
 :root {
-  /* Universal primary colors */
-  --color-primary-darkest: #5932cd;
-  --color-primary-darker: #4b23db;
-  --color-primary-dark: #2920d4;
-  --color-primary: #0045d0;
-  --color-primary-light: #0070d9;
-  --color-primary-lighter: #3e94e0;
-  --color-primary-lightest: #84b8dd;
-  /* Light theme surface colors */
-  --color-surface-darkest: #d2d1d1;
-  --color-surface-darker: #e2e2e2;
-  --color-surface-dark: #e5e5e5;
-  --color-surface: #e9e9e9;
-  --color-surface-light: #ededed;
-  --color-surface-lightest: #ffffff;
-  /* Text colors (some of both used on both themes */
-  --text-color-black: black;
-  --text-color-white: white;
-  --text-color: var(--text-color-black);
-  /* misc color assignments */
-  --border-color: #d5d5d5;
-  --bg-color: var(--color-surface-lightest);
-  --bg-color-colored: var(--color-primary-lighter);
+	/* Universal primary colors */
+	--color-primary-darkest: #5932cd;
+	--color-primary-darker: #4b23db;
+	--color-primary-dark: #2920d4;
+	--color-primary: #0045d0;
+	--color-primary-light: #0070d9;
+	--color-primary-lighter: #3e94e0;
+	--color-primary-lightest: #84b8dd;
+	/* Light theme surface colors */
+	--color-surface-darkest: #d2d1d1;
+	--color-surface-darker: #e2e2e2;
+	--color-surface-dark: #e5e5e5;
+	--color-surface: #e9e9e9;
+	--color-surface-light: #ededed;
+	--color-surface-lightest: #ffffff;
+	/* Text colors (some of both used on both themes */
+	--text-color-black: black;
+	--text-color-white: white;
+	--text-color: var(--text-color-black);
+	/* misc color assignments */
+	--border-color: #d5d5d5;
+	--bg-color: var(--color-surface-lightest);
+	--bg-color-colored: var(--color-primary-lighter);
 
-  color-scheme: normal;
-  background-color: var(--bg-color);
+	color-scheme: normal;
+	background-color: var(--bg-color);
 }
 
 [data-theme='dark'] {
-  /* Dark theme surface colors */
-  --color-surface-darkest: #121212;
-  --color-surface-darker: #282828;
-  --color-surface-dark: #3f3f3f;
-  --color-surface: #575757;
-  --color-surface-light: #717171;
-  --color-surface-lightest: #8b8b8b;
-  /* Assigning colors */
-  --text-color: var(--text-color-white);
-  --border-color: var(--color-surface-lightest);
-  --bg-color: var(--color-surface-darkest);
+	/* Dark theme surface colors */
+	--color-surface-darkest: #121212;
+	--color-surface-darker: #282828;
+	--color-surface-dark: #3f3f3f;
+	--color-surface: #575757;
+	--color-surface-light: #717171;
+	--color-surface-lightest: #8b8b8b;
+	/* Assigning colors */
+	--text-color: var(--text-color-white);
+	--border-color: var(--color-surface-lightest);
+	--bg-color: var(--color-surface-darkest);
 }
 
 
 html, body { 
-  height: 100%;   
-  width: 100%; 
-  margin: 0; 
-  padding: 0; 
-  color: var(--text-color);
+	height: 100%;	 
+	width: 100%; 
+	margin: 0; 
+	padding: 0; 
+	color: var(--text-color);
 }
 
 .content {
-  display: flex;
-  height: 92vh;
+	display: flex;
+	height: 100vh;
 }
 
 main {
-  flex-grow: 1;
-  height: 100%;
-  position: relative;
+	flex-grow: 1;
+	height: 100%;
+	position: relative;
 }
 
+/* Element styles */
+button {
+	background-color: inherit;
+}
+
+
+/* Generic classes */
 .z-background {
-  background-color: var(--bg-color);
-  z-index: -10;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
+	background-color: var(--bg-color);
+	z-index: -10;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
 }
 
 .no-scroll {
-  position: fixed;
-  overflow-y: hidden;
-  width: 100%;
-  top: 0;
-  left: 0;
+	position: fixed;
+	overflow-y: hidden;
+	width: 100%;
+	top: 0;
+	left: 0;
 }
 
-.sidebar {
-  width: 256px;
-  z-index: 2;
-}
-
-.sidebar-inner {
-  height: 100%;
-  padding: 0 16px 0 24px;
-  background-color: var(--bg-color);
-  border-color: var(--border-color);
-  border-width: 2px;
-  border-right-style: solid;
-  overflow-y: auto;
-}
-
-.navbar-main {
-  position: absolute;
-  top: 16px;
-  z-index: 1;
-}
-
-.main-navbar-inner {
-  position: absolute;
-  display: flex;
-  align-items: center;
-}
-
-.open-sidebar {
-  width: 30px;
-  height: 30px;
-  padding: 0 0;
-  margin: 0 12px;
-  border: none;
-}
-
-.navbar-sidebar {
-  position: sticky;
-  z-index: 2;
-  margin-top: 16px;
-  top: 16px;
-  display: flex;
-  background-color: var(--bg-color);
-}
-
-.logo-button {
-  background-color: inherit;
-  text-decoration: none;
-  color: var(--text-color);
-  border: none;
-  padding: 0;
-}
-
-.logo-text {
-  font-size: 32px;
-  margin: 0;
-  flex-shrink: 0;
-}
-
-.dark-mode-toggle {
-  display: flex;
-  padding: 0;
-  margin: 0 12px;
-  border: none;
-  align-items: center;
-}
-
-.collapse-button-container {
-  display: flex;
-  justify-content: right;
-  background-color: inherit;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-.collapse-button {
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-
-.add-button {
-  position: absolute;
-  right: 1.3rem;
-  bottom: 4.3rem;
-  width: 48px;
-  height: 48px;
-  padding: 10px;
-  margin: 0 2px;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 10px;
-}
-
-.reorder-group {
-  padding: 0;
-}
-
-.reorder-item {
-  list-style-type: none;
-}
-
-.content-main {
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  background: transparent;
-}
-
-.footer {
-  color: var(--text-color-black);
-  background-color: var(--bg-color-colored);
-}
-
-.footer-groups-container {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-button {
-  background-color: inherit;
-}
-
+/* Misc helper divs */
 .white {
-  position: absolute;
-  z-index: 2;
-  background-color: var(--bg-color);
-  height: 100px;
-  width: 230px;
-}
-
-.card { 
-  margin: 8px;
-  padding: 8px;
-  border-radius: 8px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2px 0;
-}
-
-.card-title {
-  margin: 0;
-  font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-options-container {
-  height: 24px;
-  width: 24px;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-
-.card-options-button {
-  width: 24px;
-  height: 24px;
-  border: 0;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.card-description {
-  font-size: 14px;
-  margin: 0;
-  padding: 0;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+	position: absolute;
+	left: 0;
+	z-index: 2;
+	background-color: var(--bg-color);
+	height: 100px;
 }
