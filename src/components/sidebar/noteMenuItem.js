@@ -1,22 +1,23 @@
 import { motion, useCycle } from 'framer-motion';
 import '../../styles/sidebar/MenuItem.css'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { LevelContext } from '../../contexts/LevelContext';
 
 const colors = ["var(--color-primary-lightest)", "var(--color-primary-lighter)", "var(--color-primary-light)", "var(--color-primary)", "var(--color-primary-dark)", "var(--color-primary-darker)", "var(--color-primary-darkest)"];
 
 export function Item({ index }) {
 	let { notes, setNotes } = useContext(LevelContext)
+	let [isHoovering, setIsHoovering] = useCycle(false, true)
 	var note = notes[index]
 	const style = { borderLeft: `2px solid ${colors[index < colors.length ? index : colors.length - 1]}`};
 	const removeNote = () => {
 		setNotes(notes.filter((n) => n !== note))
 	}
 	return (
-		<Card initial='open' style={style}>
+		<Card initial='open' style={style} {...{setIsHoovering}}>
 			<CardHeader>
 				<CardTitle>{note.title}</CardTitle>
-				<CardOptions {...{removeNote}}/>
+				{isHoovering && <CardOptions {...{removeNote}}/>}
 			</CardHeader>
 			<CardDescription>{note.description}</CardDescription>
 			{/* display here like little previews of other stuff 
@@ -26,12 +27,14 @@ export function Item({ index }) {
 }
 
 
-export function Card({ children, style }) {
+export function Card({ children, style, setIsHoovering }) {
 	return (
 		<motion.div 
 			style={style}
 			className="card"
 			whileHover={{ scale: 1.05 }}
+			onMouseEnter={setIsHoovering}
+			onMouseLeave={setIsHoovering}
 		>
 			{ children }
 		</motion.div>

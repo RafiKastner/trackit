@@ -1,7 +1,7 @@
 import { Reorder } from 'framer-motion'
-import {Item} from './menuItem';
+import {Item} from './noteMenuItem.js';
 import { motion } from 'framer-motion';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import '../../styles/sidebar/Sidebar.css'
 import Navbar from './sidebarNavbar';
 import Topbar from './topbar.js'
@@ -10,12 +10,12 @@ import { LevelContext } from '../../contexts/LevelContext.js';
 
 const sidebarVariants = {
 	open: {
-		width: "300px",
+		width: '379px',
 		translateX: '0',
 	},
 	closed: {
-		width: "0",
-		translateX: '-150px',
+		width: '0',
+		translateX: '-379px',
 	},
 }
 
@@ -59,22 +59,17 @@ export default function Sidebar() {
 }
 
 export function SidebarReturn() {
-	let { notes, setNotes, sidebarOpen, sidebarAnimationTiming } = useContext(LevelContext)
-	var open = sidebarOpen
+	const { notes, sidebarOpen, sidebarAnimationTiming } = useContext(LevelContext)
+	const open = sidebarOpen
+	const { setAnimBounds, setBounds } = useContext(SidebarContext)
 
-	var { animBounds, setAnimBounds } = useContext(SidebarContext)
-
-	var { setBounds} = useContext(SidebarContext)
 	useEffect(() => {
-		var group = document.getElementsByClassName('sidebar-inner')[0]
-		var pos = group.getBoundingClientRect()
-		var white = group.getElementsByClassName('white')[0].getBoundingClientRect()
-		setBounds({ top: pos.top + white.bottom, bottom: pos.bottom})
+		let group = document.getElementsByClassName('sidebar-inner')[0]
+		let pos = group.getBoundingClientRect()
+		setBounds({ top: pos.top, bottom: pos.bottom})
 
 		setAnimBounds({ start: 0, end: notes.length - 1 })
 	}, [setBounds, setAnimBounds, notes.length])
-
-	var { notesbarRef } = useContext(SidebarContext)
 	
 	return (
 		<motion.aside className='sidebar' 
@@ -89,50 +84,50 @@ export function SidebarReturn() {
 			}}
 		>
 			<div className='sidebar-inner'>
-				<div className='folder-display'>
-					
-				</div>
-				<div className='notes-display'>
-					<WhiteSpace {...{notes, sidebarOpen}}/>
-					<Topbar/>
-					<Navbar/>
-					<h3>Yesterday</h3>
-					<Reorder.Group axis="y" values={notes} onReorder={setNotes} className='reorder-group' ref={notesbarRef}>
-						{notes.map((note, index) => (
-							<Reorder.Item key={note.id} value={note} className='reorder-item' 
-								variants={itemVariants}
-								custom={{index: index, start: animBounds.start, end: animBounds.end}}
-								>
-								<Item index={index}/>
-							</Reorder.Item>
-						))}
-					</Reorder.Group>
-				</div>
+				<FolderDisplay/>
+				<NotesDisplay/>
 			</div>
 		</motion.aside>
 	)
 }
 
-export function WhiteSpace({ notes, sidebarOpen, height = 50 }) {
+function NotesDisplay() {
+	let { notes, setNotes } = useContext(LevelContext)
+	let { animBounds } = useContext(SidebarContext)
+	let {isNotesScrolled, setIsNotesScrolled} = useContext(SidebarContext)
+	let { notesbarRef } = useContext(SidebarContext)
 	return (
-		<motion.div className='white' style={ {height: height} }
-			initial={'open'}
-			variants={{
-				open: {
-					width: '290px',
-					translateX: '0',
-				},
-				closed: {
-					width: '0',
-					translateX: '-150px',
-				},
-			}}
-			animate={sidebarOpen ? 'open' : 'closed'}
-			transition={{
-				type: 'tween',
-				duration: .3,
-				delay: sidebarOpen ? 0 : .07 * notes.length + .02 + .125,
-			}}
-		/>
+		<div className='notes-display'>
+			<Topbar/>
+			<div className='notes-display-inner' 
+			onScroll={(e) => {
+				if (e.target.scrollTop > 0 && !isNotesScrolled) {
+					setIsNotesScrolled(true)
+				} else if (e.target.scrollTop <= 0 && isNotesScrolled) {
+					setIsNotesScrolled(false)
+				}
+			}}>
+				<Navbar/>
+				<h3>Yesterday</h3>
+				<Reorder.Group axis="y" values={notes} onReorder={setNotes} className='reorder-group' ref={notesbarRef}>
+					{notes.map((note, index) => (
+						<Reorder.Item key={note.id} value={note} className='reorder-item'
+							variants={itemVariants}
+							custom={{index: index, start: animBounds.start, end: animBounds.end}}
+							>
+							<Item index={index}/>
+						</Reorder.Item>
+					))}
+				</Reorder.Group>
+			</div>
+		</div>
+	)
+}
+
+function FolderDisplay() {
+	return (
+		<div className='folder-display'>
+
+		</div>
 	)
 }

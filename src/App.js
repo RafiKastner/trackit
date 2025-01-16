@@ -2,21 +2,18 @@ import './styles/App.css';
 import Sidebar from './components/sidebar/sidebar';
 import Footer from './components/footer';
 import Main from './components/main';
-import { useAppLogic } from './scripts/appLogic';
-import { LevelContext } from './contexts/LevelContext';
+import { LevelContextProvider } from './contexts/LevelContext';
 
 function App() {
-	var props = useAppLogic()
-
 	return (
 		<>
-			<LevelContext.Provider value={props}>
+			<LevelContextProvider>
 				<div className='content'>
-					<Sidebar {...props}/>
-					<Main {...props}/>
+					<Sidebar/>
+					<Main/>
 				</div>
 				<Footer/>
-			</LevelContext.Provider>
+			</LevelContextProvider>
 		</>
 	)
 }

@@ -3,9 +3,10 @@ import { createContext, useState, useRef } from "react";
 export const SidebarContext = createContext()
 
 export function SidebarContextProvider({ children }) {
-    var [bounds, setBounds] = useState({})
-    var notesbarRef = useRef(null)
-    var [animBounds, setAnimBounds] = useState({})
+    let [bounds, setBounds] = useState({})
+    let notesbarRef = useRef(null)
+    let [animBounds, setAnimBounds] = useState({})
+    let [isNotesScrolled, setIsNotesScrolled] = useState(false)
 
     return (
         <SidebarContext.Provider value={{
@@ -14,6 +15,8 @@ export function SidebarContextProvider({ children }) {
             notesbarRef,
             animBounds,
             setAnimBounds,
+            isNotesScrolled,
+            setIsNotesScrolled,
         }}>
             {children}
         </SidebarContext.Provider>

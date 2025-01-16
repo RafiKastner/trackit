@@ -6,7 +6,6 @@ import { LevelContext } from "../contexts/LevelContext";
 
 export default function Main() {
 	let { sidebarOpen, sidebarAnimationTiming } = useContext(LevelContext)
-	console.log(sidebarAnimationTiming)
 	return (
 		<main className="main">
 			<div className='z-background'></div>

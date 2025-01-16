@@ -1,6 +1,6 @@
 /* Sidebar itself */
 .sidebar {
-	width: 384px;
+	--padding-side: 8px;
 	z-index: 2;
 }
 
@@ -9,7 +9,6 @@
 	width: 100%;
 	background-color: var(--bg-color);
 	border-color: var(--border-color);
-	border-width: 2px;
 	border-right-style: solid;
 	overflow-y: auto;
 	display: flex;
@@ -17,11 +16,22 @@
 }
 
 /* Folder display */
+.folder-display {
+	width: 176px;
+	border-right: solid var(--border-color);
+}
 
 /* Notes display */
 .notes-display {
-	padding: 0 24px 0 24px;
-	overflow-y: auto;
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+	overflow-x: visible;
+}
+
+.notes-display-inner {
+	padding: 0 var(--padding-side);
+	overflow: auto;
 }
 
 /* Reorder */

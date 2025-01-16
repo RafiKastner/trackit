@@ -1,6 +1,8 @@
 /* Navbar */
 .navbar-sidebar {
-	margin: 24px 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 /* Header */
@@ -14,8 +16,22 @@
 
 .folder-name-header {
 	margin: 0;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: bold;
+}
+
+/* Universals */
+.button {
+	margin: 0;
+	padding: 0;
+	border: none;
+	width: 21px;
+	height: 21px;
+}
+
+.svg {
+	height: 90%;
+	width: 90%;
 }
 
 /* Back */
@@ -30,28 +46,18 @@
 }
 
 /* Search */
-.search {
-	width: 100%;
-	overflow: hidden;
-	max-height: 26px;
-	margin: 8px 0;
-	border-width: 2px;
-	border-style: none;
-	box-sizing: border-box;
-}
 
-.search-input {
 
-}
-
-.search-button {
-	border: none;
-	width: 100%;
-}
-
-/* Adder */
-.adder-text {
+/* New Note */
+.new-note-text {
 	margin: 0;
 	padding: 0;
 	color: var(--text-color);
+}
+
+
+
+/* Misc generics */
+.margin {
+	margin: 8px;
 }

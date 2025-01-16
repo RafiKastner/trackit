@@ -6,7 +6,7 @@ import { LevelContext } from '../../contexts/LevelContext';
 
 export default function Topbar() {
     let { notes, setSidebarAnimationTiming } = useContext(LevelContext)
-    let { bounds, setAnimBounds, notesbarRef } = useContext(SidebarContext)
+    let { bounds, setAnimBounds, notesbarRef, isNotesScrolled } = useContext(SidebarContext)
 
     const findAnimationBounds = useCallback(() => {
 		if (!notesbarRef.current) return;
@@ -34,19 +34,23 @@ export default function Topbar() {
 		setSidebarAnimationTiming(.07 * (ret.end - ret.start) + .02 + .125)
 	}, [notes, bounds, notesbarRef, setAnimBounds, setSidebarAnimationTiming])
     return (
-        <div className='topbar-sidebar'>
-            <LogoButton/>
+        <div className='topbar-sidebar' style={{borderBottom: isNotesScrolled ? 'solid 1px black' : ''}}>
+            <LogoButton isInSidebar={true}/>
             <DarkModeToggle/>
             <CollapseButton {...{findAnimationBounds}}/>
 	  </div>
     )
 }
 
-export function LogoButton() {
+export function LogoButton({ isInSidebar = false }) {
 	return (
-		<a href="/" className='logo-button'>
+		<a href="/" className='logo-button' style={{ 
+			left: isInSidebar ? '-160px' : '0',
+			width: isInSidebar ? '0' : '',
+			position: 'relative',
+		}}>
 			<h1 className='logo-text' data-text='Trackit' 
-			onMouseEnter={UnscrambleAnimation}>Trackit</h1>
+			/* onMouseEnter={UnscrambleAnimation} */>Trackit</h1>
 		</a>
 	)
 }
