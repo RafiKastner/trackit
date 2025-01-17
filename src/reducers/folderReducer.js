@@ -1,125 +1,120 @@
 export default function folderReducer(folders, action) {
-	const [namespace, actionType] = action.type.split('/')
-	switch (namespace) {
-		case 'folder': {
-			switch (actionType) {
-				case 'added': {
-					editFolderWithPath(folders, action.path, (folder) => ({
-						...folder,
-						folders: [
-							...folder.folders,
-							{
-								type: 'folder',
-								id: action.id,
-								title: action.title,
-								notes: action.notes,
-								folders: action.folders,
-								path: `${action.path}/${action.id}`,
-								parent: folder.id,
-							}
+	switch (action.type) {
+		case 'added': {
+			const parentFolder = folders.byId[action.parent]
+			const Recents = folders.byId['Recents']
+			const type = action.object.type
+			const path = [...parentFolder.path, action.id]
+
+			return {
+				...folders,
+				byId: {
+					...folders.byId,
+					Recents: {
+						...Recents,
+						notes: [
+							...Recents.notes,
+							(type === 'note' && action.id),
 						]
-					}))
-				}
-				case 'changed': {
-					return editFolderWithPath(folders, action.path, (folder) => ({
-						...folder,
-						...action.folder,
-					}))
-				}
-				case 'deleted': {
-					let path = action.path.split('/')
-					let id = path.pop()
-					path = path.join('/') || '/' //remove id of folder from path
-					console.log(path, id)
-					if (path === '/') {
-						return folders.filter(f => f.id !== id)
+					},
+					[action.parent]: {
+						...parentFolder,
+						...(type === 'folder' ? 
+						{ 
+							folders: [
+								...parentFolder.folders,
+								action.id
+							]
+						} : 
+						{
+							notes: [
+								...parentFolder.notes,
+								action.id
+							]
+						})
+					},
+					[action.id]: {
+						...action.object,
+						parent: action.parent,
+						path: path,
 					}
-					return editFolderWithPath(folders, path, (folder) => ({
-						...folder,
-						folders: folder.folders.filter(f => f.id !== id)
-					}))
-				}
-				default: {
-					throw Error('Unknown folder action: ' + actionType)
+				},
+				...selection(folders, action, type, path)
+			}
+		}
+		case 'changed': {
+			return {
+				...folders,
+				byId: {
+					...folders.byId,
+					[action.id]: {
+						...folders.byId[action.id],
+						...action.object
+					}
 				}
 			}
 		}
-		case 'note': {
-			let path = action.path.split('/')
-			let id = path.pop()
-			path = path.join('/') || '/'
-			switch (actionType) {
-				case 'added': {
-					return editFolderWithPath(folders, action.path, (folder) => ({
-						...folder,
-						notes: [
-							...folder.notes,
-							{
-								type: 'note',
-								id: action.id,
-								title: action.title,
-								description: action.description,
-								parent: folder.id,
-								path: `${action.path}/${action.id}`,
-							}
-						]
-					}))
+		case 'deleted': {
+			//make deleting shit work so it deletes sub-folders but allows notes
+			//to migrate to recents
+			const newById = {...folders.byId}
+			const obj = newById[action.id]
+			const parent = newById[obj.parent]
+			if (obj.type === 'folder') {
+				const index = parent.folders.indexOf(action.id)
+				if (index !== -1) {
+					parent.folders.splice(index, 1);
 				}
-				case 'changed': {
-					return editFolderWithPath(folders, path, (folder) => {
-						let note = folder.notes.find(n => n.id === id)
-						let newNotes = [...folder.notes].filter(n => n.id !== id)
-						return {
-							...folder,
-							notes: [
-								...newNotes,
-								{
-									...note,
-									...action.note
-								}
-							]
-						}
-					})
+				const of = obj.folders
+				for (let i=0; i<of.length; i++) {
+					delete newById[of[i]]
 				}
-				case 'deleted': {
-					return editFolderWithPath(folders, path, (folder) => ({
-						...folder,
-						notes: folder.notes.filter(n => n.id !== id)
-					}))
+				const on = obj.notes
+				for (let i=0; i<on.length; i++) {
+					newById[on[i]].parent = 'Recents'
 				}
-				default: {
-					throw Error('Unknown note action: ' + action.type)
+			} else if (obj.type === 'note') {
+				let index = parent.notes.indexOf(action.id)
+				if (index !== -1) {
+					parent.notes.splice(index, 1);
 				}
+				const Recents = newById['Recents'].notes
+				index = Recents.indexOf(action.id)
+				if (index !== -1) {
+					Recents.splice(index, 1);
+				}
+			}
+			delete newById[action.id]
+			return {
+				...folders,
+				byId: newById
+			}
+		}
+		case 'selected': {
+			const obj = folders.byId[action.id]
+			const type = obj.type
+			const path = obj.path
+			return {
+				...folders,
+				...selection(folders, action, obj.type, obj.path)
 			}
 		}
 		default: {
-			throw Error('Unknown namespace: ' + namespace)
+			throw Error('Unknown action: ' + action.type)
 		}
 	}
 }
 
-function recursiveFolderLookUp(folders, path, todo, depth = 1) {
-	return folders.map(folder => {
-		if (folder.id === path[depth]) {
-			if (depth === path.length - 1) {
-				return todo(folder) || folder
-			}
-			else {
-				return {
-					...folder,
-					folders: recursiveFolderLookUp(folder.folders, path, todo, depth + 1)
-				}
-			}
+function selection(folders, action, type, path) {
+	console.log(type, )
+	const ret = {
+		selection: {
+			...folders.selection,
+			[type]: action.id,
+			path: path,
+			note: type === 'folder' ? null : action.id,
 		}
-		return folder
-	})
-}
-
-export function editFolderWithPath(folders, path, todo) {
-	if (path === '/' || path === '') {
-		return [...folders, todo({})] || folders
 	}
-	const split = path.split('/')
-
-	return recursiveFolderLookUp(folders, split, todo)
+	console.log(ret)
+	return ret
 }

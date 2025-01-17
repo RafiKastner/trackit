@@ -92,7 +92,7 @@ export function SidebarReturn() {
 }
 
 function NotesDisplay() {
-	let { notes, setNotes } = useContext(LevelContext)
+	let { folders, notes, getNotesObjects, getObject, reorder } = useContext(LevelContext)
 	let { animBounds } = useContext(SidebarContext)
 	let {isNotesScrolled, setIsNotesScrolled} = useContext(SidebarContext)
 	let { notesbarRef } = useContext(SidebarContext)
@@ -109,9 +109,9 @@ function NotesDisplay() {
 			}}>
 				<Navbar/>
 				<h3>Yesterday</h3>
-				<Reorder.Group axis="y" values={notes} onReorder={setNotes} className='reorder-group' ref={notesbarRef}>
+				<Reorder.Group axis="y" values={notes} onReorder={(newOrder) => reorder(folders.selection.folder, 'notes', newOrder)} className='reorder-group' ref={notesbarRef}>
 					{notes.map((note, index) => (
-						<Reorder.Item key={note.id} value={note} className='reorder-item'
+						<Reorder.Item key={note} value={note} className='reorder-item'
 							variants={itemVariants}
 							custom={{index: index, start: animBounds.start, end: animBounds.end}}
 							>

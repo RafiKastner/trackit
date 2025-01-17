@@ -6,18 +6,15 @@ import { LevelContext } from '../../contexts/LevelContext';
 const colors = ["var(--color-primary-lightest)", "var(--color-primary-lighter)", "var(--color-primary-light)", "var(--color-primary)", "var(--color-primary-dark)", "var(--color-primary-darker)", "var(--color-primary-darkest)"];
 
 export function Item({ index }) {
-	let { notes, setNotes } = useContext(LevelContext)
+	let { getObject, notes, setNotes } = useContext(LevelContext)
 	let [isHoovering, setIsHoovering] = useCycle(false, true)
-	var note = notes[index]
+	var note = getObject(notes[index])
 	const style = { borderLeft: `2px solid ${colors[index < colors.length ? index : colors.length - 1]}`};
-	const removeNote = () => {
-		setNotes(notes.filter((n) => n !== note))
-	}
 	return (
 		<Card initial='open' style={style} {...{setIsHoovering}}>
 			<CardHeader>
 				<CardTitle>{note.title}</CardTitle>
-				{isHoovering && <CardOptions {...{removeNote}}/>}
+				{isHoovering && <CardOptions/>}
 			</CardHeader>
 			<CardDescription>{note.description}</CardDescription>
 			{/* display here like little previews of other stuff 
@@ -53,8 +50,8 @@ export function CardDescription({ children }) {
 	return <p className='card-description'>{ children }</p>
 }
 
-export function CardOptions({ removeNote }) {
-	let { color } = useContext(LevelContext)
+export function CardOptions() {
+	const { color, deleteObj } = useContext(LevelContext)
 	var [optionsOpen, setOptionsOpen] = useCycle(false, true)
 	return (
 		<div className='card-options-container'>
