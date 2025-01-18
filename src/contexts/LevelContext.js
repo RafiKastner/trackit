@@ -68,7 +68,7 @@ export function LevelContextProvider({ children }) {
                 type: 'folder',
                 title: `Folder ${i}`,
                 notes: [],
-                folders: ['some_folder'],
+                folders: [],
                 path: ['root', `${i}`]
             };
             initialFolders.byId.root.folders.push(`${i}`)
@@ -101,6 +101,9 @@ export function LevelContextProvider({ children }) {
                 type: 'note',
                 title: title || `Untitled`,
                 description: description || 'Description',
+                content: {
+                    text: ''
+                },
             },
             id: id,
             parent: parent || 'Recents',
@@ -154,7 +157,6 @@ export function LevelContextProvider({ children }) {
             dataTheme,
             setDataTheme,
             color,
-            //setNotes,
             sidebarOpen,
             setSidebarOpen,
             sidebarAnimationTiming,

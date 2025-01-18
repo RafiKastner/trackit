@@ -28,3 +28,13 @@
 	justify-content: center;
 	background: transparent;
 }
+
+.note {
+	width: 600px;
+	height: 100%;
+	border: none;
+	background-color: transparent;
+	color: var(--text-color);
+	border: solid var(--text-color);
+	outline: none;
+}

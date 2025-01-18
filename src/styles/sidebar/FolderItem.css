@@ -1,0 +1,19 @@
+.folder-item {
+    border-radius: 4px;
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.folder-dropdown {
+    height: 21px;
+    width: 21px;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.folder-name {
+    margin: 0;
+    font-size: 15px6
+}

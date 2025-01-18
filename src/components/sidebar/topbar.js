@@ -78,7 +78,7 @@ export function DarkModeToggle() {
 export function CollapseButton({ findAnimationBounds }) {
     let { color, setSidebarOpen } = useContext(LevelContext)
 	return (
-	<div className='collapse-button-container'>
+	<div className='topbar-right'>
 		<button className='collapse-button' 
 			onClick={() => {
 				findAnimationBounds()

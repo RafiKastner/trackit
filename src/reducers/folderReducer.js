@@ -12,10 +12,9 @@ export default function folderReducer(folders, action) {
 					...folders.byId,
 					Recents: {
 						...Recents,
-						notes: [
-							...Recents.notes,
-							(type === 'note' && action.id),
-						]
+						notes: type === 'note'
+    						? [...Recents.notes, action.id]
+   							: [...Recents.notes],
 					},
 					[action.parent]: {
 						...parentFolder,
@@ -92,8 +91,6 @@ export default function folderReducer(folders, action) {
 		}
 		case 'selected': {
 			const obj = folders.byId[action.id]
-			const type = obj.type
-			const path = obj.path
 			return {
 				...folders,
 				...selection(folders, action, obj.type, obj.path)
@@ -106,7 +103,6 @@ export default function folderReducer(folders, action) {
 }
 
 function selection(folders, action, type, path) {
-	console.log(type, )
 	const ret = {
 		selection: {
 			...folders.selection,
@@ -115,6 +111,5 @@ function selection(folders, action, type, path) {
 			note: type === 'folder' ? null : action.id,
 		}
 	}
-	console.log(ret)
 	return ret
 }

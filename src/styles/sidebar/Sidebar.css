@@ -10,7 +10,7 @@
 	background-color: var(--bg-color);
 	border-color: var(--border-color);
 	border-right-style: solid;
-	overflow-y: auto;
+	overflow-y: hidden;
 	display: flex;
 	box-sizing: border-box;
 }
@@ -19,6 +19,27 @@
 .folder-display {
 	width: 176px;
 	border-right: solid var(--border-color);
+	display: flex;
+	flex-direction: column;
+	overflow-x: visible;
+}
+
+.folder-display-inner {
+	margin: 0 var(--padding-side);
+	overflow: auto;
+	height: 100%;
+}
+
+div.navbar-folder {
+	margin-left: 4px;
+	height: 24px;
+}
+
+.add-folder {
+	border: none;
+	width: 30px;
+	height: 21px;
+	padding: 0;
 }
 
 /* Notes display */

@@ -5,7 +5,9 @@ import { useContext } from "react";
 import { LevelContext } from "../contexts/LevelContext";
 
 export default function Main() {
-	let { sidebarOpen, sidebarAnimationTiming } = useContext(LevelContext)
+	let { sidebarOpen, sidebarAnimationTiming, folders, change } = useContext(LevelContext)
+	const id = folders.selection.note
+	const note = folders.byId[id]
 	return (
 		<main className="main">
 			<div className='z-background'></div>
@@ -25,7 +27,12 @@ export default function Main() {
 				</div>
 			</motion.div>
 			<div className="content-main">
-					<p>Main</p>
+					<div>
+						<p>Main</p>
+						{note && <textarea className="note" value={note?.content.text} onChange={(e) => change(id, { description: e.target.value, content: { text: e.target.value } })}>
+							{note?.content.text}
+						</textarea>}
+					</div>
 			</div>
 		</main>
 	)

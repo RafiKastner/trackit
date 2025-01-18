@@ -29,7 +29,7 @@
 	align-items: center;
 }
 
-.collapse-button-container {
+.topbar-right {
 	display: flex;
 	justify-content: right;
 	background-color: inherit;

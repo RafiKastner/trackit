@@ -6,12 +6,13 @@ import { LevelContext } from '../../contexts/LevelContext';
 const colors = ["var(--color-primary-lightest)", "var(--color-primary-lighter)", "var(--color-primary-light)", "var(--color-primary)", "var(--color-primary-dark)", "var(--color-primary-darker)", "var(--color-primary-darkest)"];
 
 export function Item({ index }) {
-	let { getObject, notes, setNotes } = useContext(LevelContext)
-	let [isHoovering, setIsHoovering] = useCycle(false, true)
-	var note = getObject(notes[index])
+	const { getObject, notes } = useContext(LevelContext)
+	const [isHoovering, setIsHoovering] = useCycle(false, true)
+	const id = notes[index]
+	const note = getObject(id)
 	const style = { borderLeft: `2px solid ${colors[index < colors.length ? index : colors.length - 1]}`};
 	return (
-		<Card initial='open' style={style} {...{setIsHoovering}}>
+		<Card initial='open' {...{ style, setIsHoovering, id}}>
 			<CardHeader>
 				<CardTitle>{note.title}</CardTitle>
 				{isHoovering && <CardOptions/>}
@@ -24,7 +25,8 @@ export function Item({ index }) {
 }
 
 
-export function Card({ children, style, setIsHoovering }) {
+export function Card({ children, style, setIsHoovering, id }) {
+	const { select } = useContext(LevelContext)
 	return (
 		<motion.div 
 			style={style}
@@ -32,6 +34,7 @@ export function Card({ children, style, setIsHoovering }) {
 			whileHover={{ scale: 1.05 }}
 			onMouseEnter={setIsHoovering}
 			onMouseLeave={setIsHoovering}
+			onClick={() => select(id)}
 		>
 			{ children }
 		</motion.div>
