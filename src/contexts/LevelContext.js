@@ -26,8 +26,8 @@ export function LevelContextProvider({ children }) {
     const [dataTheme, setDataTheme] = useState(() => {
         const storedTheme = localStorage.getItem("dataTheme");
         if (!storedTheme) {
-            localStorage.setItem("dataTheme", "light");
-            return "light";
+            localStorage.setItem("dataTheme", "dark");
+            return "dark";
         }
         return storedTheme;
     });
