@@ -62,7 +62,7 @@ export function LevelContextProvider({ children }) {
                 note: null,
             }
         };
-        for (let i = 0; i < 4; i++) {
+        /* for (let i = 0; i < 4; i++) {
             initialFolders.byId[`${i}`] = { 
                 id: `${i}`,
                 type: 'folder',
@@ -72,7 +72,7 @@ export function LevelContextProvider({ children }) {
                 path: ['root', `${i}`]
             };
             initialFolders.byId.root.folders.push(`${i}`)
-        }
+        } */
         return initialFolders;
     })
 

@@ -4,10 +4,11 @@ import '../../styles/sidebar/SidebarNavbar.css'
 import { LevelContext } from "../../contexts/LevelContext"
 
 export default function Navbar() {
+	const { folders } = useContext(LevelContext)
 	return (
 		<nav className='navbar-sidebar'>
 			<div className='navbar-sidebar-header-container'>
-				<h2 className='folder-name-header'>Recents</h2>
+				<h2 className='folder-name-header'>{folders.byId[folders.selection.folder].title}</h2>
 			</div>
 			<div className="flex-center navbar-button-wrapper">
 				<NewNote/>
