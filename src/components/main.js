@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import '../styles/Main.css'
 import { useContext } from "react";
 import { LevelContext } from "../contexts/LevelContext";
+import { Tiptap } from "./tiptap";
 
-export default function Main() {
-	let { sidebarOpen, sidebarAnimationTiming, folders, change } = useContext(LevelContext)
+export default function Main( {} ) {
+	let { sidebarOpen, sidebarAnimationTiming, folders } = useContext(LevelContext)
 	const id = folders.selection.note
 	const note = folders.byId[id]
 	return (
@@ -27,12 +28,7 @@ export default function Main() {
 				</div>
 			</motion.div>
 			<div className="content-main">
-					<div>
-						<p>Main</p>
-						{note && <textarea className="note" value={note?.content.text} onChange={(e) => change(id, { description: e.target.value, content: { text: e.target.value } })}>
-							{note?.content.text}
-						</textarea>}
-					</div>
+				<Tiptap {...{ note }}/>
 			</div>
 		</main>
 	)

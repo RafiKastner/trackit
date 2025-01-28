@@ -59,6 +59,7 @@ main {
 	flex-grow: 1;
 	height: 100%;
 	position: relative;
+	display: flex;
 }
 
 /* Element styles */
@@ -81,6 +82,11 @@ button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.flex-between {
+	display: flex;
+	justify-content: space-between;
 }
 
 .fill-space {

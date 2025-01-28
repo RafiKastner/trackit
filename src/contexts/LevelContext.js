@@ -2,24 +2,6 @@ import { createContext, useState, useEffect, useReducer } from "react";
 import folderReducer, { editFolderWithPath } from "../reducers/folderReducer";
 import { generateUID } from "../scripts/generics";
 
-/*
-to-do:
-- split sidebar context into NotesDisplayContext
-	and FolderDisplayContext
-- folder/notes variable structure
-	- userdata exists at top level
-	- folders exists at top level too
-	- there is also current folder and current 
-		note states which are the ids of each
-	- FolderDisplay get folders from LevelContext and
-		does its thing
-	- NotesDisplayContext has var just for folder.name
-	- NotesDisplay remains pretty unchanged and displays
-		notes as normal except by declaring 
-		notes = getNotes()
-		- also have getFolder() func
-*/
-
 export const LevelContext = createContext();
 
 export function LevelContextProvider({ children }) {
@@ -31,6 +13,16 @@ export function LevelContextProvider({ children }) {
         }
         return storedTheme;
     });
+
+    const userOS = (() => {
+        const userAgent = navigator.userAgent
+        if (userAgent.indexOf("Mac") !== -1) return "Mac"
+        else if (userAgent.indexOf("Windows") !== -1) return "Windows"
+        else if (userAgent.indexOf("Linux") !== -1) return "Linux"
+        else return "Unknown"
+    })()
+    const shortcutKey = userOS === "Mac" ? '\u{2318}' : '^'
+    const altKey = userOS === "Mac" ? '\u{2325}' : 'Alt'
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', dataTheme);
@@ -62,17 +54,6 @@ export function LevelContextProvider({ children }) {
                 note: null,
             }
         };
-        /* for (let i = 0; i < 4; i++) {
-            initialFolders.byId[`${i}`] = { 
-                id: `${i}`,
-                type: 'folder',
-                title: `Folder ${i}`,
-                notes: [],
-                folders: [],
-                path: ['root', `${i}`]
-            };
-            initialFolders.byId.root.folders.push(`${i}`)
-        } */
         return initialFolders;
     })
 
@@ -154,6 +135,9 @@ export function LevelContextProvider({ children }) {
 
     return (
         <LevelContext.Provider value={{
+            userOS,
+            shortcutKey,
+            altKey,
             dataTheme,
             setDataTheme,
             color,
