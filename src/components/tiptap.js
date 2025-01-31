@@ -1,18 +1,30 @@
 import React, { Children, cloneElement, isValidElement, useContext, useEffect, useRef, useState } from 'react'
 import { LevelContext } from '../contexts/LevelContext'
 import { useEditor, EditorContent } from '@tiptap/react'
+import { motion } from 'framer-motion';
 import { Color } from '@tiptap/extension-color'
-import ListItem from '@tiptap/extension-list-item'
 import TextStyle from '@tiptap/extension-text-style'
+import TaskItem from '@tiptap/extension-task-item'
+import TaskList from '@tiptap/extension-task-list'
 import StarterKit from '@tiptap/starter-kit'
 import '../styles/tiptap.css'
+import Placeholder from '@tiptap/extension-placeholder'
 
 export function Tiptap({ note }) {
-	let { folders, change, addNote } = useContext(LevelContext)
+	let { folders, change, addNote, sidebarOpen } = useContext(LevelContext)
 	const id = folders.selection.note
     
     const editor = useEditor({
-        extensions: [StarterKit],
+        extensions: [
+            StarterKit,
+            Placeholder.configure({
+                placeholder: 'Write something...',
+            }),
+            TaskList,
+            TaskItem.configure({
+                nested: true,
+            }),
+        ],
         content: note?.content.text || '<p></p>',
     })
 
@@ -69,7 +81,13 @@ export function Tiptap({ note }) {
 	return (
 		<>
             {id && <MenuBar editor={editor}/>}
-            <EditorContent editor={editor}/>
+            <motion.div animate={{
+                height: '100%',
+                marginLeft: sidebarOpen ? '0' : '124px',
+                marginTop: id ? '0' : '59px',
+            }}>
+                <EditorContent editor={editor}/>
+            </motion.div>
         </>
 	  )
 }
@@ -117,7 +135,7 @@ function ControlButton({ editor, type, callback, children }) {
                     [callback]()
                     .run()
             }
-            className={editor.isActive(type) ? 'is-active' : ''}
+            className={`control-button ${editor.isActive(type) ? ' is-active' : ''}`}
         >
             {children}
         </button>
@@ -136,7 +154,7 @@ function Dropdown({ text, children }) {
     }, [])
     return (
         <div className='dropdown'>
-            <button onClick={() => setOpen(!open)}>
+            <button className="control-button" onClick={() => setOpen(!open)}>
                 <div></div>
                 {text}
             </button>
@@ -161,8 +179,6 @@ function DropdownItem({ text, shortcut, callback, setOpen }) {
             <div className='kbd-container'>{shortcut.split('+').map((key, index, array) => (
                 <React.Fragment key={index}>
                     <kbd>{key}</kbd>
-                    {index !== array.length - 1 &&
-                    <span>+</span>}
                 </React.Fragment>
             ))}
             </div>

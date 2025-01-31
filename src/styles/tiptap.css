@@ -1,29 +1,46 @@
 .ProseMirror {
     outline: none;
     height: 100%;
+    margin: 0 8px;
 }
+
+.tiptap p.is-editor-empty:first-child::before {
+    color: var(--place-holder-color);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+  
 
 div:has(> .tiptap) { 
     height : 100%; 
 }
 
 .control-group {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
-    background-color: rgb(31, 38, 45);
-    border-radius: 4px;
+    width: 400px;
+    background: linear-gradient(135deg, rgba(48, 2, 148, 0.452), rgba(1, 75, 185, 0.512));
+    backdrop-filter: blur(50px);
+    border-radius: 6px;
+    margin: 12px 0;
+    padding: 4px;
     button {    
         height: 100%;
-        color: #aeaeae;
+        color: var(--text-color);
         border: none;
         padding: 0 2px;
         margin: 0 4px;
         font-size: 14px;
+        border-radius: 4px;
     }
-    button:hover:not(.is-active) {
+    .control-button:hover:not(.is-active) {
         background-color: #a2aaad57;
+        color: var(--text-color)
     }
     button:active {
         color: white;
@@ -31,28 +48,43 @@ div:has(> .tiptap) {
     }
     button.is-active {
         color: white;
-        background-color: var(--color-primary-lightest);
+        background-color: var(--selection-color);
     }
     
     .dropdown-children {
         position: absolute;
-        z-index: 1;
         border: solid gray .5px;
         border-radius: 6px;
-        background: linear-gradient(135deg, rgba(124, 109, 156, 0.287), rgba(59, 52, 74, 0.287));
+        background: linear-gradient(135deg, #302c3c, #1e1d24);
         backdrop-filter: blur(50px);
         background-clip: border-box;
         -webkit-background-clip: border-box;
-        width: 128px;
-        padding: 8px;
+        width: fit-content;
+        padding: 4px 10px;
         margin: 0;
     }
     
     .dropdown-item {
         width: 100%;
         box-sizing: border-box;
-        padding: 0;
+        padding: 3px;
         margin: 0;
-        background-color: none;
+        background-color: transparent;
+        color: #aeaeae;
+        font-size: 13px;
+        font-weight: 500;
+        .shortcut-name {
+            color: var(--text-color);
+            margin-right: 24px;
+        }
+        kbd:nth-last-child(n + 2){
+            margin-right: 4px;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+    }
+    .dropdown-item:hover {
+        color: var(--text-color);
+        background-color: var(--selection-color);
     }
 }
