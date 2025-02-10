@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, isValidElement, useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, } from 'react'
 import { LevelContext } from '../contexts/LevelContext'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { motion } from 'framer-motion';
@@ -9,9 +9,10 @@ import TaskList from '@tiptap/extension-task-list'
 import StarterKit from '@tiptap/starter-kit'
 import '../styles/tiptap.css'
 import Placeholder from '@tiptap/extension-placeholder'
+import { Dropdown, DropdownItem, ShortCut } from './ui/dropdown';
 
 export function Tiptap({ note }) {
-	let { folders, change, addNote, sidebarOpen } = useContext(LevelContext)
+	const { folders, change, addNote, } = useContext(LevelContext)
 	const id = folders.selection.note
     
     const editor = useEditor({
@@ -81,13 +82,22 @@ export function Tiptap({ note }) {
 	return (
 		<>
             {id && <MenuBar editor={editor}/>}
-            <motion.div animate={{
-                height: '100%',
-                marginLeft: sidebarOpen ? '0' : '124px',
-                marginTop: id ? '0' : '59px',
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row-reverse',
+                height: '100%'
             }}>
-                <EditorContent editor={editor}/>
-            </motion.div>
+                <motion.div
+                style={{
+                    height: '100%',
+                    marginTop: id ? '0' : '49px',
+                    maxWidth: '912px',
+                    width: '100%',
+                }}
+                >
+                    <EditorContent editor={editor}/>
+                </motion.div>
+            </div>
         </>
 	  )
 }
@@ -99,14 +109,31 @@ function MenuBar({ editor }) {
         <div className='control flex-center'>
             <div className='control-group'>
                 <div className='button-group'>
-                    <Dropdown text="Header">
+                    <Dropdown inner="Header">
                         {Array(6).fill('_').map((_, index) => {
                             const num = index + 1
                             return (
-                                <DropdownItem  key={index} text={`Heading ${num}`} shortcut={shortcutKey + `+${altKey}+${num}`} callback={
+                                <DropdownItem  key={index} text={`Heading ${num}`} right={
+                                    <ShortCut keys={[shortcutKey, altKey, num]}/>
+                                } callback={
                                     () => editor.chain().focus().toggleHeading({ level: num }).run()
                                 }/>
                         )})}
+                    </Dropdown>
+                    <ControlButton type={'taskItem'} editor={editor} callback={'toggleTaskList'}>
+                        Checkbox
+                    </ControlButton>
+                    <Dropdown inner="List">
+                        <DropdownItem text='List' right={
+                            <ShortCut keys={[shortcutKey, shiftUnicode, '7']}/>
+                        } callback={
+                            () => editor.chain().focus().toggleBulletList().run()
+                        }/>
+                        <DropdownItem text='Ordered List' right={
+                            <ShortCut keys={[shortcutKey, shiftUnicode, '8']}/>
+                        } callback={
+                            () => editor.chain().focus().toggleOrderedList().run()
+                        }/>
                     </Dropdown>
                 </div>
                 <div className='button-group'>
@@ -125,7 +152,7 @@ function MenuBar({ editor }) {
     )
 }
 
-function ControlButton({ editor, type, callback, children }) {
+function ControlButton({ editor, type, callback, children, highlight = true}) {
     return (
         <button onClick={() => editor.chain().focus()[callback]().run()}
             disabled={
@@ -135,53 +162,9 @@ function ControlButton({ editor, type, callback, children }) {
                     [callback]()
                     .run()
             }
-            className={`control-button ${editor.isActive(type) ? ' is-active' : ''}`}
+            className={`control-button ${editor.isActive(type) && highlight ? ' is-active' : ''}`}
         >
             {children}
-        </button>
-    )
-}
-
-function Dropdown({ text, children }) {
-    const [open, setOpen] = useState(false)
-    const ref = useRef(null)
-    useEffect(() => {
-        const listener = (e) => {
-            if (ref.current && !ref.current.contains(e.target)) setOpen(false)
-        }
-        document.addEventListener("mousedown", listener)
-        return () => document.removeEventListener("mousedown", listener)
-    }, [])
-    return (
-        <div className='dropdown'>
-            <button className="control-button" onClick={() => setOpen(!open)}>
-                <div></div>
-                {text}
-            </button>
-            {open && 
-                <div ref={ref} className='dropdown-children'>
-                    {Children.map(children, (child) => {
-                        if (isValidElement(child)) {
-                            return cloneElement(child, {setOpen})
-                        }
-                        return child
-                    })}
-                </div>
-            }
-        </div>
-    )
-}
-
-function DropdownItem({ text, shortcut, callback, setOpen }) {
-    return (
-        <button className='dropdown-item flex-between' onClick={() => {setOpen(false); callback()}}>
-            <span className='shortcut-name'>{text} </span>
-            <div className='kbd-container'>{shortcut.split('+').map((key, index, array) => (
-                <React.Fragment key={index}>
-                    <kbd>{key}</kbd>
-                </React.Fragment>
-            ))}
-            </div>
         </button>
     )
 }
