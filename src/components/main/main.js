@@ -1,8 +1,8 @@
-import { LogoButton } from "./sidebar/topbar";
+import { LogoButton } from "../sidebar/topbar";
 import { motion } from 'framer-motion';
-import '../styles/Main.css'
+import '../../styles/main/Main.css'
 import { useContext } from "react";
-import { LevelContext } from "../contexts/LevelContext";
+import { LevelContext } from "../../contexts/LevelContext";
 import { Tiptap } from "./tiptap";
 
 export default function Main( {} ) {

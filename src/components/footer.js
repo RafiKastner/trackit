@@ -5,7 +5,7 @@ export default function Footer() {
 		<FooterContainer>
 			 <FooterGroup>
 				<FooterTitle>Social</FooterTitle>
-				<FooterLink href="https://github.com">GitHub</FooterLink>
+				<FooterLink href="https://github.com/rafikastner/trackit">GitHub</FooterLink>
 			</FooterGroup>
 		</FooterContainer>
 	)

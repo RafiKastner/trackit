@@ -1,7 +1,7 @@
 import './styles/App.css';
 import Sidebar from './components/sidebar/sidebar';
 import Footer from './components/footer';
-import Main from './components/main';
+import Main from './components/main/main';
 import { LevelContextProvider } from './contexts/LevelContext';
 
 function App() {

@@ -1,0 +1,135 @@
+.ProseMirror {
+	outline: none;
+	height: 100%;
+	/* padding: 0 clamp(24px, 5%, 56px); */
+	flex: 1;
+}
+
+/* Basic editor styles */
+.tiptap {
+	/* tiptap margins should dynamically grow and shrink depending 
+	on size of parent (i.e. if sidebar retracted or even window resized */
+	/* ok the effect is just tiptap as max width (parent has flex-center)
+	and once it reaches max width then the rest becomes margin */
+	:first-child {
+		margin-top: 0;
+	}
+
+	/* List styles */
+	ul,
+	ol {
+		padding: 0 1rem;
+		margin: 1.25rem 1rem 1.25rem 0.4rem;
+
+		li p {
+			margin-top: 0.25em;
+			margin-bottom: 0.25em;
+		}
+	}
+
+	/* Task list specific styles */
+	ul[data-type="taskList"] {
+		list-style: none;
+		margin-left: 0;
+		padding: 0;
+
+		li {
+			align-items: flex-start;
+			display: flex;
+
+			> label {
+				flex: 0 0 auto;
+				margin-right: 0.5rem;
+				user-select: none;
+			}
+
+			> div {
+				flex: 1 1 auto;
+			}
+		}
+
+		input[type="checkbox"] {
+			transform: scale(1.4);
+			accent-color: var(--bg-color);
+			border: var(rgb(62, 61, 61));
+			cursor: pointer;
+		}
+
+		ul[data-type="taskList"] {
+			margin: 0;
+		}
+	}
+
+	/* Blockquote styles */
+	blockquote {
+			border-left: 3px solid rgba(135, 133, 133, 0.24);
+			margin: 1.5rem 0;
+			padding-left: 1rem;
+	}
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+	color: var(--place-holder-color);
+	content: attr(data-placeholder);
+	float: left;
+	height: 0;
+	pointer-events: none;
+}
+
+.tiptap-padding {
+	height: 100%;
+	cursor: text;
+}
+
+div:has(> .tiptap) { 
+  flex: 1;
+  height: 100%; 
+	width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.control {
+	width: 100%;
+}
+
+.control-group {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 400px;
+	background: linear-gradient(135deg, rgba(48, 2, 148, 0.452), rgba(1, 75, 185, 0.512));
+	backdrop-filter: blur(50px);
+	border-radius: 6px;
+	margin: 20px 0;
+	padding: 4px;
+	font-family: 'Roboto';
+	.button-group {
+			display: flex;
+			align-items: center;
+	}
+	button {    
+			font-family: inherit;
+			height: 100%;
+			color: var(--text-color);
+			border: none;
+			padding: 0 2px;
+			margin: 0 4px;
+			font-size: 14px;
+			border-radius: 4px;
+	}
+	.control-button:hover:not(.is-active) {
+			background-color: #a2aaad57;
+			color: var(--text-color)
+	}
+	button:active {
+			color: white;
+			background-color: #b8c2c6;
+	}
+	button.is-active {
+			color: white;
+			background-color: var(--selection-color);
+	}
+}

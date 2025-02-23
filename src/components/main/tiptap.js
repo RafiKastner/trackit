@@ -1,23 +1,30 @@
-import React, { useContext, useEffect, } from 'react'
-import { LevelContext } from '../contexts/LevelContext'
+import React, { useContext, useEffect, useState, } from 'react'
+import { LevelContext } from '../../contexts/LevelContext'
 import { useEditor, EditorContent } from '@tiptap/react'
 import { motion } from 'framer-motion';
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import StarterKit from '@tiptap/starter-kit'
-import '../styles/tiptap.css'
+import '../../styles/main/tiptap.css'
 import Placeholder from '@tiptap/extension-placeholder'
-import { Dropdown, DropdownItem, ShortCut } from './ui/dropdown';
+import { Dropdown, DropdownItem, ShortCut, SubDropdown } from '../ui/dropdown';
 
 export function Tiptap({ note }) {
 	const { folders, change, addNote, } = useContext(LevelContext)
 	const id = folders.selection.note
-    
+
     const editor = useEditor({
         extensions: [
-            StarterKit,
+            StarterKit.configure({}).extend({
+                addKeyboardShortcuts() {
+                    return {
+                        'Mod-Alt-s': () => this.editor.commands.setHorizontalRule(),
+                    }
+                },
+            }),
             Placeholder.configure({
                 placeholder: 'Write something...',
             }),
@@ -28,6 +35,17 @@ export function Tiptap({ note }) {
         ],
         content: note?.content.text || '<p></p>',
     })
+
+    const [maxWidth, setMaxWidth] = useState(window.innerWidth - 50)
+    useEffect(() => {
+        const resize = () => {
+            setMaxWidth(window.innerWidth - 50)
+        }
+        window.addEventListener('resize', resize)
+        return () => {
+            window.removeEventListener('resize', resize)
+        }
+    }, [])
 
     useEffect(() => {
         if (!editor) return
@@ -82,24 +100,32 @@ export function Tiptap({ note }) {
 	return (
 		<>
             {id && <MenuBar editor={editor}/>}
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row-reverse',
-                height: '100%'
-            }}>
-                <motion.div
+                <div
+                className='tiptap-container flex-center'
                 style={{
                     height: '100%',
-                    marginTop: id ? '0' : '49px',
-                    maxWidth: '912px',
-                    width: '100%',
+                    marginTop: id ? '0' : '64.5px',//make this automatic ideally
                 }}
                 >
+                    <TiptapPadding editor={editor}/>
                     <EditorContent editor={editor}/>
-                </motion.div>
-            </div>
+                    <TiptapPadding editor={editor}/>
+                </div>
         </>
 	  )
+}
+
+function TiptapPadding({ editor }) {
+    const { sidebarOpen, sidebarAnimationTiming } = useContext(LevelContext)
+    return (
+        <motion.div 
+            className='tiptap-padding' 
+            onClick={() => editor.chain().focus().run()}
+            style={{ width: sidebarOpen ? '24px' : '56px' }}
+            animate={{ width: sidebarOpen ? '24px' : '56px' }}
+            transition={{ duration: 0.3, ease: "easeInOut", delay: sidebarOpen ? 0 : sidebarAnimationTiming }}
+        />
+    )
 }
 
 function MenuBar({ editor }) {
@@ -114,9 +140,9 @@ function MenuBar({ editor }) {
                             const num = index + 1
                             return (
                                 <DropdownItem  key={index} text={`Heading ${num}`} right={
-                                    <ShortCut keys={[shortcutKey, altKey, num]}/>
-                                } callback={
-                                    () => editor.chain().focus().toggleHeading({ level: num }).run()
+                                        <ShortCut keys={[shortcutKey, altKey, num]}/>
+                                    } callback={
+                                        () => editor.chain().focus().toggleHeading({ level: num }).run()
                                 }/>
                         )})}
                     </Dropdown>
@@ -125,14 +151,28 @@ function MenuBar({ editor }) {
                     </ControlButton>
                     <Dropdown inner="List">
                         <DropdownItem text='List' right={
-                            <ShortCut keys={[shortcutKey, shiftUnicode, '7']}/>
-                        } callback={
-                            () => editor.chain().focus().toggleBulletList().run()
+                                <ShortCut keys={[shortcutKey, shiftUnicode, '7']}/>
+                            } callback={
+                                () => editor.chain().focus().toggleBulletList().run()
                         }/>
                         <DropdownItem text='Ordered List' right={
-                            <ShortCut keys={[shortcutKey, shiftUnicode, '8']}/>
-                        } callback={
-                            () => editor.chain().focus().toggleOrderedList().run()
+                                <ShortCut keys={[shortcutKey, shiftUnicode, '8']}/>
+                            } callback={
+                                () => editor.chain().focus().toggleOrderedList().run()
+                        }/>
+                        <DropdownItem text='Block Quote' right={
+                                <ShortCut keys={[shortcutKey, shiftUnicode, 'B']}/>
+                            } callback={
+                                () => editor.chain().focus().toggleBlockquote().run()
+                        }/>
+                        <SubDropdown text='Todo'>
+                            <DropdownItem text='Item'/>
+                        </SubDropdown>
+                        <hr/>
+                        <DropdownItem text='Separator' right={
+                                <ShortCut keys={[shortcutKey, altKey, 'S']}/>
+                            } callback={
+                                () => editor.chain().focus().setHorizontalRule().run()
                         }/>
                     </Dropdown>
                 </div>

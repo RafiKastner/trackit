@@ -10,7 +10,7 @@ export default function Folder({ id, children, indent }) {
     const [displayChildren, setDisplayChildren] = useState(true)
     return (
         <div className='folder-item-container'>
-            <div className='folder-item' onClick={() => select(id)} style={{ background: selected ? 'rgba(32, 103, 197, 0.773)' : 'transparent', paddingLeft: `${indent * 24}px` }}>
+            <div className='folder-item' onClick={() => select(id)} style={{ background: selected ? 'var(--selection-color)' : 'transparent', paddingLeft: `${indent * 24}px` }}>
                 <div className='flex-center'>
                     {hasChildren ?
                         <button className='folder-dropdown flex-center' onClick={() => setDisplayChildren(!displayChildren)}>

@@ -1,0 +1,69 @@
+.dropdown {
+    position: relative;
+
+    hr {
+        border-width: .5px;
+    }
+
+    .dropdown-children {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 4px;
+        border: solid gray .5px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, #302c3c, #1e1d24);
+        background-clip: border-box;
+        -webkit-background-clip: border-box;
+        width: fit-content;
+        padding: 4px 10px;
+        margin: 0;
+    }
+    
+    .dropdown-item {
+        width: 100%;
+        min-width: max-content;
+        box-sizing: border-box;
+        padding: 3px;
+        margin: 0;
+        background-color: transparent;
+        color: #aeaeae;
+        font-size: 13px;
+        font-weight: 500;
+        .shortcut-name {
+            color: var(--text-color);
+            margin-right: 24px;
+        }
+        kbd {
+            font-family: inherit;
+        }
+        kbd:nth-last-child(n + 2){
+            margin-right: 4px;
+        }
+    }
+    .dropdown-item:hover {
+        color: var(--text-color);
+        background-color: var(--selection-color);
+    }
+
+    .sub-dropdown {
+        width: 100%;
+        border-radius: inherit;
+        background-color: transparent;
+        .control-button {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            >div {
+                padding: 3px;
+                font-size: 13px;
+            }
+        }
+        .control-button:hover {
+            background-color: transparent;
+        }
+    }
+    .sub-dropdown:hover {
+        color: var(--text-color);
+        background-color: var(--selection-color);
+    }
+}
