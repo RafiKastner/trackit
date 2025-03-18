@@ -1,23 +1,26 @@
-import React, { Children, cloneElement, isValidElement, useEffect, useRef, useState } from 'react'
+import React, { Children, cloneElement, isValidElement, useContext, useEffect, useRef, useState } from 'react'
 import '../../styles/ui/dropdown.css'
 import { Arrow } from '../svg/arrow'
+import { DropdownContext } from '../../contexts/DropdownContext'
 
-export function Dropdown({ inner, children }) {
+export function Dropdown({ inner, offset, children }) {
    return (
         <div className='dropdown flex-center'>
-            <DropdownGeneric display='vertical' {...{inner, children}}/>
+            <DropdownGeneric display='vertical' {...{inner, offset, children}}/>
         </div>
    )
 }
 
-export function SubDropdown({ text, right, children }) {
+export function SubDropdown({ text, right, offset, children }) {
     return (
         <div className='sub-dropdown' style={{ position: 'relative'}}>
             <DropdownGeneric display='horizontal'
+                offset={ offset || { right: 15, left: 5 } }
                 inner={
                 <div className='flex-between'>
                     <span>{text}</span>
-                    <span>{right || <Arrow/>}</span>
+                    <span>{right || <Arrow stroke={'#aeaeae'}/>}</span> 
+                    {/* make above also change color with the rest */}
                 </div>
             }>
                 {children}
@@ -26,7 +29,9 @@ export function SubDropdown({ text, right, children }) {
     )
 }
 
-function DropdownGeneric({ inner, children, display }) {
+function DropdownGeneric({ inner, children, display, offset }) {
+    //do something with this so shifts when window resizes
+    //but if can connect all dropdowns to one universal eventlistener to reduce lag
     const [open, setOpen] = useState(false)
     const childrenRef = useRef(null)
     const buttonRef = useRef(null)
@@ -48,7 +53,7 @@ function DropdownGeneric({ inner, children, display }) {
                 {inner}
             </button>
             {open && 
-                <DropdownChildren type={display} offsetRef={buttonRef} {...{childrenRef, setOpen}}>
+                <DropdownChildren type={display} offsetRef={buttonRef} offsetCustom={offset} {...{childrenRef, setOpen}}>
                     {children}
                 </DropdownChildren>
             }
@@ -56,33 +61,32 @@ function DropdownGeneric({ inner, children, display }) {
     )
 }
 
-function DropdownChildren({ offsetRef, childrenRef, children, setOpen, type}) {
+function DropdownChildren({ offsetRef, childrenRef, children, setOpen, type, offsetCustom }) {
+    offsetCustom = { top: 0, left: 0, right: 0, bottom: 0, ...offsetCustom}
+    const { windowSize, } = useContext(DropdownContext)
     const [style, setStyle] = useState({ top: 0, left: 0 })
     useEffect(() => {
-        //holy clean up
-        // though i shld do something abt excess offset that I can pass in like
-        // the padding of the dropdowns
         if (!offsetRef) return
         const offset = offsetRef.current
         const offsetPos = offset.getBoundingClientRect()
         const childrenWidth = childrenRef.current.offsetWidth
         const childrenHeight = childrenRef.current.offsetHeight
         if (type === 'vertical') {
-            if (window.innerHeight - offsetPos.bottom > childrenHeight) {
-                setStyle({ top: offset.offsetHeight, left: 0 })
+            if (windowSize.height - offsetPos.bottom > childrenHeight) {
+                setStyle({ top: offset.offsetHeight + offsetCustom.top, left: 0 })
             } else {
-                setStyle({ top: -childrenHeight, left: 0 })
+                setStyle({ top: -childrenHeight - offsetCustom.bottom, left: 0 })
             }
         } else if (type === 'horizontal') {
-            if (window.innerWidth - offsetPos.right > childrenWidth) {
-                setStyle({ top: 0, left: offset.offsetWidth })
+            if (windowSize.width - offsetPos.right > childrenWidth) {
+                setStyle({ top: 0, left: offset.offsetWidth + offsetCustom.left})
             } else {
-                setStyle({ top: 0, left: -childrenWidth })
+                setStyle({ top: 0, left: -childrenWidth - offsetCustom.right })
             }
         }
-    }, [])
+    }, [windowSize])
     return (
-        <div ref={childrenRef} className='dropdown-children' style={{ top: style.top, left: style.left}}>
+        <div ref={childrenRef} className='dropdown-children' style={{ top: style.top + offsetCustom.top, left: style.left + offsetCustom.left}}>
             {Children.map(children, (child) => {
                 if (isValidElement(child) && typeof child.type === 'function') {
                     return cloneElement(child, {setOpen})
