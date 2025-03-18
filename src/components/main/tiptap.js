@@ -4,24 +4,42 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { motion } from 'framer-motion';
 import { Color } from '@tiptap/extension-color'
 import TextStyle from '@tiptap/extension-text-style'
-import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Document from '@tiptap/extension-document';
 import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import StarterKit from '@tiptap/starter-kit'
 import '../../styles/main/tiptap.css'
 import Placeholder from '@tiptap/extension-placeholder'
 import { Dropdown, DropdownItem, ShortCut, SubDropdown } from '../ui/dropdown';
+import { DropdownContextProvider } from '../../contexts/DropdownContext';
+import { schema } from '@tiptap/pm/markdown';
+
+
+const toggleTaskItem = (editor, state) => {
+    editor.chain().focus().updateAttributes('taskItem', {
+        checked: state || !editor.getAttributes('taskItem').checked
+    }).run()
+}
 
 export function Tiptap({ note }) {
 	const { folders, change, addNote, } = useContext(LevelContext)
 	const id = folders.selection.note
 
+    //fix placeholder not appearing with this
+    const CustomDocument = Document.extend({
+        content: 'heading block*',
+    })
+
     const editor = useEditor({
         extensions: [
-            StarterKit.configure({}).extend({
+            CustomDocument,
+            StarterKit.configure({
+                document: false,
+            }).extend({
                 addKeyboardShortcuts() {
                     return {
                         'Mod-Alt-s': () => this.editor.commands.setHorizontalRule(),
+                        'Mod-Shift-.': () => toggleTaskItem(editor)
                     }
                 },
             }),
@@ -35,17 +53,6 @@ export function Tiptap({ note }) {
         ],
         content: note?.content.text || '<p></p>',
     })
-
-    const [maxWidth, setMaxWidth] = useState(window.innerWidth - 50)
-    useEffect(() => {
-        const resize = () => {
-            setMaxWidth(window.innerWidth - 50)
-        }
-        window.addEventListener('resize', resize)
-        return () => {
-            window.removeEventListener('resize', resize)
-        }
-    }, [])
 
     useEffect(() => {
         if (!editor) return
@@ -99,18 +106,22 @@ export function Tiptap({ note }) {
 
 	return (
 		<>
-            {id && <MenuBar editor={editor}/>}
-                <div
-                className='tiptap-container flex-center'
-                style={{
-                    height: '100%',
-                    marginTop: id ? '0' : '64.5px',//make this automatic ideally
-                }}
-                >
-                    <TiptapPadding editor={editor}/>
-                    <EditorContent editor={editor}/>
-                    <TiptapPadding editor={editor}/>
-                </div>
+            {id && 
+                <DropdownContextProvider>
+                    <MenuBar editor={editor}/>
+                </DropdownContextProvider>
+            }
+            <div
+            className='tiptap-container flex-center'
+            style={{
+                height: '100%',
+                marginTop: id ? '0' : '64.5px',//make this automatic ideally
+            }}
+            >
+                <TiptapPadding editor={editor}/>
+                <EditorContent editor={editor}/>
+                <TiptapPadding editor={editor}/>
+            </div>
         </>
 	  )
 }
@@ -166,7 +177,26 @@ function MenuBar({ editor }) {
                                 () => editor.chain().focus().toggleBlockquote().run()
                         }/>
                         <SubDropdown text='Todo'>
-                            <DropdownItem text='Item'/>
+                            <DropdownItem text='Todo' right={
+                                    <ShortCut keys={[shortcutKey, shiftUnicode, '9']}/>
+                                } callback={
+                                    () => editor.chain().focus().toggleTaskList().run()
+                            }/>
+                            <DropdownItem text='Toggle' right={
+                                    <ShortCut keys={[shortcutKey, shiftUnicode, '.']}/>
+                                } callback={ 
+                                    () => toggleTaskItem(editor)
+                            }/>
+                            <DropdownItem text='Mark as Completed' callback={
+                                () => toggleTaskItem(editor, true)
+                            }/>
+                            <DropdownItem text='Mark as Incomplete' callback={
+                                () => toggleTaskItem(editor, false)
+                            }/>
+                            <hr/>
+                            <DropdownItem text='Move Completed to Bottom' callback={
+                                () => moveCompletedToBottom(editor)
+                            }/>
                         </SubDropdown>
                         <hr/>
                         <DropdownItem text='Separator' right={
@@ -207,4 +237,37 @@ function ControlButton({ editor, type, callback, children, highlight = true}) {
             {children}
         </button>
     )
+}
+
+function moveCompletedToBottom(editor) {
+    const selection = editor.view.state.selection
+    const { $from } = selection
+    const parentDepth = selection.$from.depth - 2
+    const parent = selection.$from.node(parentDepth)
+    if (parent.type.name !== 'taskList') return
+    const nodes = []
+    //get each child node from the parent
+    parent.forEach((node) => {
+        nodes.push(node)
+    })
+    //sort nodes by attrs.checked true last
+    nodes.sort((a, b) => {
+        if (a.attrs.checked === b.attrs.checked) return 0
+        else if (a.attrs.checked && !b.attrs.checked) return 1
+        else return -1
+    })
+    //and then map new taskItems with the same content
+    .map((node) => editor.schema.nodes.taskItem.create(
+        { checked: node.attrs.checked },
+        node.content
+    ))
+    editor.chain().focus().command(({ tr, dispatch }) => {
+        //make a taskList fragment containing all listItems
+        const fragment = editor.schema.nodes.taskList.create(null, nodes)
+        console.log(fragment)
+        //replace from the start of the parent taskList to the end with our new taskList fragment
+        tr.replaceWith($from.before(parentDepth), $from.after(parentDepth), fragment)
+        if (dispatch) dispatch(tr)
+        return true
+    }).run()
 }
