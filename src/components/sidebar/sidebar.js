@@ -131,7 +131,7 @@ function FolderDisplay() {
 	addLocation = addLocation === 'Recents' ? 'root' : addLocation
 	return (
 		<div className='folder-display'>
-			<div className='topbar-sidebar' style={{ height: '62px'}}>
+			<div className='topbar-sidebar' style={{ height: '6.2rem'}}>
 			{/* placeholder height until add options button (make each topbar button have one uniform class) */}
 			</div>
 			<div className='folder-display-inner'>

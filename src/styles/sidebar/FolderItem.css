@@ -1,13 +1,13 @@
 .folder-item {
-    border-radius: 4px;
-    padding: 4px;
+    border-radius: .4rem; /* make 4px instead cause border? */
+    padding: .4rem;
     display: flex;
     justify-content: space-between;
 }
 
 .folder-dropdown {
-    height: 21px;
-    width: 21px;
+    height: 2.1rem;
+    width: 2.1rem;
     border: none;
     background: none;
     padding: 0;
@@ -15,5 +15,5 @@
 
 .folder-name {
     margin: 0;
-    font-size: 15px6
+    font-size: 1.6rem; /* maybe change to dif size*/
 }

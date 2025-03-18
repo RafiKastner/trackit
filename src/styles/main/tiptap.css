@@ -18,12 +18,12 @@
 	/* List styles */
 	ul,
 	ol {
-		padding: 0 1rem;
-		margin: 1.25rem 1rem 1.25rem 0.4rem;
+		padding: 0 1.6rem;
+		margin: 2rem 1.6rem 2rem .64rem;
 
 		li p {
-			margin-top: 0.25em;
-			margin-bottom: 0.25em;
+			margin-top: 0.64em;
+			margin-bottom: 0.4em;
 		}
 	}
 
@@ -39,7 +39,7 @@
 
 			> label {
 				flex: 0 0 auto;
-				margin-right: 0.5rem;
+				margin-right: 0.8rem;
 				user-select: none;
 			}
 
@@ -51,7 +51,7 @@
 		input[type="checkbox"] {
 			transform: scale(1.4);
 			accent-color: var(--bg-color);
-			border: var(rgb(62, 61, 61));
+			border: rgb(62, 61, 61);
 			cursor: pointer;
 		}
 
@@ -63,7 +63,7 @@
 	/* Blockquote styles */
 	blockquote {
 			border-left: 3px solid rgba(135, 133, 133, 0.24);
-			margin: 1.5rem 0;
+			margin: 2.4rem 0;
 			padding-left: 1rem;
 	}
 }
@@ -102,9 +102,9 @@ div:has(> .tiptap) {
 	width: 400px;
 	background: linear-gradient(135deg, rgba(48, 2, 148, 0.452), rgba(1, 75, 185, 0.512));
 	backdrop-filter: blur(50px);
-	border-radius: 6px;
-	margin: 20px 0;
-	padding: 4px;
+	border-radius: 0.6rem;
+	margin: 2rem 0;
+	padding: .4rem;
 	font-family: 'Roboto';
 	.button-group {
 			display: flex;
@@ -115,10 +115,10 @@ div:has(> .tiptap) {
 			height: 100%;
 			color: var(--text-color);
 			border: none;
-			padding: 0 2px;
-			margin: 0 4px;
-			font-size: 14px;
-			border-radius: 4px;
+			padding: 0 .2rem;
+			margin: 0 0.4rem;
+			font-size: 1.4rem;
+			border-radius: .4rem;
 	}
 	.control-button:hover:not(.is-active) {
 			background-color: #a2aaad57;

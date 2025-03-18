@@ -47,6 +47,9 @@
 	--place-holder-color: #595d62;
 }
 
+html {
+	font-size: 62.5%;
+}
 
 html, body { 
 	height: 100%;	 
@@ -54,6 +57,10 @@ html, body {
 	margin: 0; 
 	padding: 0; 
 	color: var(--text-color);
+}
+
+body {
+	font-size: 1.6rem;
 }
 
 .content {

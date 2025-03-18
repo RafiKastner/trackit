@@ -1,6 +1,6 @@
 /* Topbar */
 .topbar-sidebar {
-	padding: 16px 0 8px 0;
+	padding: 1.6rem 0 0.8rem 0;
 	display: flex;
 	margin: 0 var(--padding-side) 0 0;
 	box-sizing: border-box;
@@ -16,7 +16,7 @@
 }
 
 .logo-text {
-	font-size: 32px;
+	font-size: 3.2rem;
 	margin: 0;
 	flex-shrink: 0;
 }
@@ -24,7 +24,7 @@
 .dark-mode-toggle {
 	display: flex;
 	padding: 0;
-	margin: 0 12px;
+	margin: 0 1.2rem;
 	border: none;
 	align-items: center;
 }

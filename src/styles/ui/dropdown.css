@@ -1,8 +1,11 @@
 .dropdown {
+    --right-color: #aeaeae;
+
     position: relative;
 
     hr {
         border-width: .5px;
+        border-color: var(--right-color);
     }
 
     .dropdown-children {
@@ -15,7 +18,7 @@
         background-clip: border-box;
         -webkit-background-clip: border-box;
         width: fit-content;
-        padding: 4px 10px;
+        padding: .4rem 1rem;
         margin: 0;
     }
     
@@ -23,21 +26,21 @@
         width: 100%;
         min-width: max-content;
         box-sizing: border-box;
-        padding: 3px;
+        padding: 0.3rem;
         margin: 0;
         background-color: transparent;
-        color: #aeaeae;
-        font-size: 13px;
+        color: var(--right-color);
+        font-size: 1.3rem;
         font-weight: 500;
         .shortcut-name {
             color: var(--text-color);
-            margin-right: 24px;
+            margin-right: 2.4rem;
         }
         kbd {
             font-family: inherit;
         }
         kbd:nth-last-child(n + 2){
-            margin-right: 4px;
+            margin-right: 0.4rem;
         }
     }
     .dropdown-item:hover {
@@ -54,16 +57,19 @@
             margin: 0;
             padding: 0;
             >div {
-                padding: 3px;
-                font-size: 13px;
+                padding: 0.3rem;
+                font-size: 1.3rem;
+            }
+            svg {
+                stroke: var(--right-color);
             }
         }
         .control-button:hover {
-            background-color: transparent;
+            color: var(--text-color);
+            background-color: var(--selection-color);
+            svg {
+                stroke: var(--text-color)
+            }
         }
-    }
-    .sub-dropdown:hover {
-        color: var(--text-color);
-        background-color: var(--selection-color);
     }
 }
